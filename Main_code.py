@@ -23,15 +23,21 @@ def mask_image(image,vertices,cvtToColor):
 
 cap = cv2.VideoCapture('test_videos/solidYellowLeft.mp4')
 
+fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+out = cv2.VideoWriter('test_videos_output/solidYellowLeft.mp4', fourcc, 25, (960,  540))
+
 while(cap.isOpened()):
     ret, frame = cap.read()
+    
+    if not ret:
+        break
     ##Main Code
     image1_gray = RGBtoGray(frame)
     image1_gray_smoothed = smoothing(image1_gray,7)
 
     edges_image1 = detected_edges(image1_gray_smoothed,20,75)
 
-## all of this to find lines on the right side of the image
+##finds lines on the right side of the image
     vertices = np.array([[[(480,539),(900,539),(480,285),(490,285)]],[[(500,539),(80,539),(490,285),(500,285)]]])
     edges_r = mask_image(edges_image1,(vertices[0]),255)
     edges_l = mask_image(edges_image1,(vertices[1]),255)
@@ -106,13 +112,14 @@ while(cap.isOpened()):
     lines_left = cv2.line(b,point1_2,point2_2,(0,0,255),pixel_no)
     frame = cv2.addWeighted(lines_left,alpha,frame,beta,gamma)
 
-
-    cv2.imshow('frame',frame)
+    out.write(frame)
     
-    if cv2.waitKey(30) & 0xFF == ord('q'):
+    cv2.imshow('frame',frame)   
+    if cv2.waitKey(25) & 0xFF == ord('q'):
         break
 
 cap.release()
+out.release()
 cv2.destroyAllWindows()
 
 
