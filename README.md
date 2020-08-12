@@ -14,7 +14,7 @@ The aim of this project is to find lane lines on the road using the canny edge d
 ### Running the code:
 -------------------
 
-To run the code on different images, you would have to change the name of the input video on which the code needs
+To run the code on different videos, you would have to change the name of the input video on which the code needs
 to be run, and the name of the output video to which the appended video will be stored.
 
 Hence, you have to change the following lines of code accordingly,
